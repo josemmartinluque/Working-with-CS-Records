@@ -4,49 +4,21 @@ namespace ClassesAndRecords
 {
     class Program
     {
-
-        static void PrintCourse(Course course)
-        {
-            Console.WriteLine(course.Name);
-        }
-
         static void Main(string[] args)
         {
-            Course pluralsightCourse = new();
-            pluralsightCourse.Name = "Working with C# Records";
-            pluralsightCourse.Author = "Roland Guijt";
+            TimedCourseRecord classroomCourse = new(
+                "Working with C# Records",
+                "Roland Guijt",
+                Duration: 90
+                );
 
-            CourseRecord classroomCourse = new("Working with C# records");
-
-            CourseRecord anotherCourse = classroomCourse with { Name = "C# Getting Started" };
+            var clonedCourse = classroomCourse with { Name = "John" };
+            var castCourse = (TimedCourseRecord) clonedCourse;
+            var duration = castCourse.Duration;
         }
     }
 
-    public class Course
-    {
-        public string Name { get; set; }
-        public string Author { get; set; }
-
-        public void Deconstruct(out string name, out string author)
-        {
-            name = Name;
-            author = Author;
-        }
-    }
-
-    public record CourseRecord(string Name)
-    {
-        public CourseRecord(string name, string author): this(name)
-        {
-            Author = author;
-        }
-        public string Author { get; init; }
-        public string Title
-        {
-            get
-            {
-                return $"{Name} - {Author}";
-            }
-        }
-    }
+    public record CourseRecord(string Name, string Author);
+    public record TimedCourseRecord(string Name, string Author, int Duration):
+        CourseRecord(Name, Author);
 }
